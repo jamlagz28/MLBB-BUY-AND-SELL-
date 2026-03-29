@@ -1,0 +1,11 @@
+<?php
+// ============================================
+// File: .htaccess (Optional - for security)
+// Place in root directory to deny direct access to uploads folder
+// ============================================
+/*
+<FilesMatch "\.(php|phtml|php3|php4|php5|inc)$">
+    Deny from all
+</FilesMatch>
+*/
+?>
