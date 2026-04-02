@@ -2,9 +2,7 @@
 // ============================================
 // File: index.php
 // MLBB ACCOUNTS BUY & SELL PLATFORM
-// WITH IMAGE DOWNLOAD & PURCHASE MODAL
-// WITH SOLD ACCOUNTS SECTION & DATABASE STATS
-// WITH PROOF OF TRANSACTIONS SECTION
+// WITH ENHANCED PURCHASE MODAL - LARGER IMAGE
 // All original functions preserved
 // ============================================
 session_start();
@@ -22,8 +20,8 @@ $stmt_testimonials = $conn->query("SELECT * FROM testimonials WHERE status = 'ac
 $testimonials = $stmt_testimonials->fetchAll(PDO::FETCH_ASSOC);
 
 // Facebook Page URL (Update with your actual Facebook page)
-$facebook_url = "https://www.facebook.com/JamLagz28/";
-$messenger_url = "https://m.me/JamLagz28";
+$facebook_url = "https://web.facebook.com/JamLagz2025/";
+$messenger_url = "https://m.me/JamLagz2025";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -635,7 +633,7 @@ $messenger_url = "https://m.me/JamLagz28";
             transform: translateX(-5px);
         }
         
-        /* Purchase Modal Styles */
+        /* Enhanced Purchase Modal Styles */
         .purchase-modal {
             display: none;
             position: fixed;
@@ -652,10 +650,10 @@ $messenger_url = "https://m.me/JamLagz28";
         .purchase-modal-content {
             position: relative;
             background: linear-gradient(145deg, #0f121c, #0a0d15);
-            margin: 5% auto;
+            margin: 3% auto;
             padding: 0;
             width: 90%;
-            max-width: 900px;
+            max-width: 1100px;
             border-radius: 32px;
             border: 1px solid rgba(224,58,58,0.3);
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
@@ -685,6 +683,7 @@ $messenger_url = "https://m.me/JamLagz28";
             margin: 0;
             font-family: 'Orbitron', monospace;
             color: var(--mlbb-red);
+            font-size: 1.5rem;
         }
         
         .close-purchase {
@@ -706,93 +705,196 @@ $messenger_url = "https://m.me/JamLagz28";
         }
         
         .purchase-modal-body {
-            padding: 25px;
+            padding: 30px;
             display: flex;
-            gap: 25px;
+            gap: 35px;
             flex-wrap: wrap;
         }
         
         .purchase-product-image {
-            flex: 1;
-            min-width: 200px;
+            flex: 1.2;
+            min-width: 320px;
             text-align: center;
+            cursor: pointer;
+            position: relative;
         }
         
+        /* Make the purchase modal image clickable with hover effect */
         .purchase-product-image img {
             width: 100%;
-            max-width: 300px;
+            max-width: 450px;
+            height: auto;
+            max-height: 450px;
+            object-fit: contain;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 1px solid rgba(224,58,58,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .purchase-product-image img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(224,58,58,0.4);
+            border-color: var(--mlbb-red);
+        }
+        
+        /* Image hint overlay for purchase modal */
+        .purchase-image-hint {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            padding: 6px 15px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            z-index: 5;
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+            color: var(--mlbb-gold);
+            font-weight: 500;
+        }
+        
+        .purchase-product-image:hover .purchase-image-hint {
+            opacity: 1;
         }
         
         .purchase-product-info {
-            flex: 2;
+            flex: 1.5;
         }
         
         .purchase-product-info h4 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin-bottom: 15px;
+            font-family: 'Orbitron', monospace;
+            color: var(--mlbb-gold);
         }
         
         .purchase-product-info .description {
             color: #b0b0b0;
-            margin-bottom: 20px;
-            line-height: 1.6;
+            margin-bottom: 25px;
+            line-height: 1.8;
+            font-size: 1rem;
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 16px;
+            border-left: 3px solid var(--mlbb-red);
         }
         
         .purchase-prices {
             display: flex;
             gap: 15px;
-            margin: 20px 0;
+            margin: 25px 0;
             flex-wrap: wrap;
         }
         
         .purchase-price {
             background: rgba(0,0,0,0.5);
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 40px;
             font-weight: 700;
+            font-size: 1.1rem;
+            backdrop-filter: blur(5px);
         }
         
+        .price-php { color: #4caf50; border-left: 3px solid #4caf50; }
+        .price-usd { color: #2196f3; border-left: 3px solid #2196f3; }
+        .price-thb { color: #ff9800; border-left: 3px solid #ff9800; }
+        
         .contact-options {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255,255,255,0.15);
         }
         
         .contact-options h5 {
             margin-bottom: 15px;
             color: var(--mlbb-gold);
+            font-size: 1.2rem;
+        }
+        
+        .contact-options p {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        /* New contact info styles - Phone and Email */
+        .contact-info-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        
+        .contact-info-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.3);
+            padding: 12px 18px;
+            border-radius: 50px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: 0.2s;
+        }
+        
+        .contact-info-list li:hover {
+            background: rgba(224,58,58,0.15);
+            border-color: rgba(224,58,58,0.3);
+            transform: translateX(5px);
+        }
+        
+        .contact-info-list i {
+            font-size: 1.4rem;
+            width: 32px;
+            text-align: center;
+        }
+        
+        .contact-info-list .fa-phone-alt {
+            color: #4caf50;
+        }
+        
+        .contact-info-list .fa-envelope {
+            color: #ff9800;
+        }
+        
+        .contact-info-list .contact-text {
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        
+        .contact-info-list .contact-value {
+            color: #e0e0e0;
+            font-weight: 600;
+            margin-left: auto;
         }
         
         .contact-buttons {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
+            margin-top: 10px;
         }
         
         .btn-fb {
             background: var(--fb-blue);
             border: none;
             border-radius: 50px;
-            padding: 12px 24px;
+            padding: 12px 28px;
             font-weight: 600;
             transition: 0.3s;
         }
         
-        .btn-messenger {
-            background: var(--messenger-blue);
-            border: none;
-            border-radius: 50px;
-            padding: 12px 24px;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-        
-        .btn-fb:hover, .btn-messenger:hover {
+        .btn-fb:hover {
             transform: translateY(-3px);
             filter: brightness(1.1);
         }
+        
+        /* Removed .btn-messenger styles as requested */
         
         .features-section {
             background: linear-gradient(180deg, transparent, rgba(224,58,58,0.05), transparent);
@@ -849,6 +951,17 @@ $messenger_url = "https://m.me/JamLagz28";
             .download-btn-modal { bottom: 30px; left: 20px; padding: 8px 16px; font-size: 0.8rem; }
             .back-to-index { top: 20px; left: 20px; padding: 6px 15px; font-size: 0.85rem; }
             .purchase-modal-body { flex-direction: column; }
+            .purchase-product-image { min-width: 100%; }
+            .purchase-product-image img { max-width: 100%; }
+            .purchase-product-info h4 { font-size: 1.4rem; }
+            .contact-info-list li { flex-wrap: wrap; }
+            .contact-info-list .contact-value { margin-left: 0; margin-top: 5px; }
+            .purchase-image-hint { font-size: 0.65rem; white-space: nowrap; }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .purchase-product-image { min-width: 280px; }
+            .purchase-product-image img { max-width: 350px; }
         }
     </style>
 </head>
@@ -858,7 +971,7 @@ $messenger_url = "https://m.me/JamLagz28";
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
         <a class="navbar-brand" href="index.php">
-            <span class="brand-icon"><i class="fas fa-skull"></i></span> JAM<span style="color: var(--mlbb-red);">LAGZ</span>
+          <img src="images/skull.png" alt="Skull Icon" width="40"> JAM<span style="color: var(--mlbb-red);">LAGZ</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="background: var(--mlbb-red); border-radius: 8px;">
             <span class="navbar-toggler-icon"></span>
@@ -885,11 +998,11 @@ $messenger_url = "https://m.me/JamLagz28";
         <p class="hero-subtitle">Premium Mobile Legends Accounts with High Ranks, Rare Skins, and Collector Items. 100% Safe & Secure Transactions!</p>
         
         <div class="rank-strip">
-            <span class="rank-badge rank-warrior"><i class="fas fa-chess-pawn"></i> Warrior</span>
-            <span class="rank-badge rank-epic"><i class="fas fa-star"></i> Epic</span>
-            <span class="rank-badge rank-legend"><i class="fas fa-crown"></i> Legend</span>
-            <span class="rank-badge rank-mythic"><i class="fas fa-dragon"></i> Mythic</span>
-            <span class="rank-badge rank-glory"><i class="fas fa-gem"></i> Glory</span>
+            <span class="rank-badge rank-warrior"><i class="fas fa-chess-pawn"></i> Renowned Collector</span>
+            <span class="rank-badge rank-epic"><i class="fas fa-star"></i> Exalted Collector</span>
+            <span class="rank-badge rank-legend"><i class="fas fa-crown"></i> Mega Collector</span>
+            <span class="rank-badge rank-mythic"><i class="fas fa-dragon"></i> World Collector</span>
+            <span class="rank-badge rank-glory"><i class="fas fa-gem"></i> Universal Collector</span>
         </div>
         
         <a href="#accounts" class="btn btn-buy mt-4" style="width: auto; padding: 12px 32px; display: inline-block;">
@@ -962,8 +1075,8 @@ $messenger_url = "https://m.me/JamLagz28";
                             
                             <div class="badge-currency">
                                 <span class="price-chip price-php"><i class="fas fa-coins"></i> ₱<?php echo number_format($product['price_php'], 2); ?></span>
-                                <span class="price-chip price-usd"><i class="fas fa-dollar-sign"></i> $<?php echo number_format($product['price_usd'], 2); ?></span>
-                                <span class="price-chip price-thb"><i class="fas fa-baht-sign"></i> ฿<?php echo number_format($product['price_thb'], 2); ?></span>
+                                <span class="price-chip price-usd"><i class="fas fa-dollar-sign"></i> <?php echo number_format($product['price_usd'], 2); ?></span>
+                                <span class="price-chip price-thb"><i class="fas fa-baht-sign"></i> <?php echo number_format($product['price_thb'], 2); ?></span>
                             </div>
                             
                             <button type="button" class="btn btn-buy" onclick="openPurchaseModal(<?php echo htmlspecialchars(json_encode($product)); ?>)">
@@ -1002,9 +1115,8 @@ $messenger_url = "https://m.me/JamLagz28";
                     <img src="uploads/<?php echo htmlspecialchars($product['image']); ?>" 
                          class="card-img-top" 
                          alt="<?php echo htmlspecialchars($product['name']); ?>"
-                         style="filter: grayscale(0.3);"
-                         onclick="openImageModal('uploads/<?php echo htmlspecialchars($product['image']); ?>', '<?php echo htmlspecialchars($product['name']); ?> (SOLD)')"
-                         style="cursor: pointer;">
+                         style="filter: grayscale(0.3); cursor: pointer;"
+                         onclick="openImageModal('uploads/<?php echo htmlspecialchars($product['image']); ?>', '<?php echo htmlspecialchars($product['name']); ?> (SOLD)')">
                     
                     <div class="card-body p-3">
                         <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
@@ -1050,7 +1162,7 @@ $messenger_url = "https://m.me/JamLagz28";
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-shield-alt" style="color: var(--mlbb-gold);"></i></div>
                     <h5>Account Guarantee</h5>
-                    <p class="small">30-day warranty on all purchased accounts</p>
+                    <p class="small">All accounts are safe and refundable.</p>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6">
@@ -1064,14 +1176,14 @@ $messenger_url = "https://m.me/JamLagz28";
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-credit-card" style="color: #2196f3;"></i></div>
                     <h5>Multiple Payments</h5>
-                    <p class="small">GCash, PayMaya, Bank Transfer, Crypto</p>
+                    <p class="small">GCash, PayMaya, Bank Transfer, GoTyme</p>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6">
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-headset" style="color: var(--mlbb-red);"></i></div>
                     <h5>24/7 Support</h5>
-                    <p class="small">Live chat & Discord for buyers and sellers</p>
+                    <p class="small">Live chat at Facebook for buyers and sellers</p>
                 </div>
             </div>
         </div>
@@ -1083,13 +1195,13 @@ $messenger_url = "https://m.me/JamLagz28";
     <div class="row text-center g-3">
         <div class="col-6 col-md-3">
             <div class="p-3" style="background: rgba(224,58,58,0.1); border-radius: 20px;">
-                <h3 class="text-danger fw-bold">500+</h3>
+                <h3 class="text-danger fw-bold">More than 200+ since 2023</h3>
                 <small>Accounts Sold</small>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="p-3" style="background: rgba(224,58,58,0.1); border-radius: 20px;">
-                <h3 class="text-danger fw-bold">98%</h3>
+                <h3 class="text-danger fw-bold">95%</h3>
                 <small>Satisfaction Rate</small>
             </div>
         </div>
@@ -1101,7 +1213,7 @@ $messenger_url = "https://m.me/JamLagz28";
         </div>
         <div class="col-6 col-md-3">
             <div class="p-3" style="background: rgba(224,58,58,0.1); border-radius: 20px;">
-                <h3 class="text-danger fw-bold">⭐ 5★</h3>
+                <h3 class="text-danger fw-bold">⭐ 4.5★</h3>
                 <small>Trustpilot Rating</small>
             </div>
         </div>
@@ -1170,7 +1282,7 @@ $messenger_url = "https://m.me/JamLagz28";
     </div>
 </div>
 
-<!-- Purchase Modal -->
+<!-- Enhanced Purchase Modal - Updated with Phone and Email instead of Messenger, and clickable image -->
 <div id="purchaseModal" class="purchase-modal">
     <div class="purchase-modal-content">
         <div class="purchase-modal-header">
@@ -1178,8 +1290,11 @@ $messenger_url = "https://m.me/JamLagz28";
             <span class="close-purchase" onclick="closePurchaseModal()">&times;</span>
         </div>
         <div class="purchase-modal-body">
-            <div class="purchase-product-image">
+            <div class="purchase-product-image" onclick="openPurchaseImageModal()">
                 <img id="purchaseImage" src="" alt="Product Image">
+                <div class="purchase-image-hint">
+                    <i class="fas fa-search-plus"></i> Click to view full size & download
+                </div>
             </div>
             <div class="purchase-product-info">
                 <h4 id="purchaseName"></h4>
@@ -1191,13 +1306,25 @@ $messenger_url = "https://m.me/JamLagz28";
                 </div>
                 <div class="contact-options">
                     <h5><i class="fas fa-comment"></i> How to Purchase?</h5>
-                    <p class="small text-secondary">Contact us via Facebook or Messenger to complete your purchase. We'll assist you with the payment and account transfer process.</p>
+                    <p class="small text-secondary">Contact us directly via phone or email to complete your purchase. We'll assist you with the payment and account transfer process.</p>
+                    
+                    <!-- Contact Information List with Icons -->
+                    <ul class="contact-info-list">
+                        <li>
+                            <i class="fas fa-phone-alt"></i>
+                            <span class="contact-text">Contact Number:</span>
+                            <span class="contact-value">09813527364</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span class="contact-text">Email Address:</span>
+                            <span class="contact-value">jameslaag1228@gmail.com</span>
+                        </li>
+                    </ul>
+                    
                     <div class="contact-buttons">
                         <a href="<?php echo $facebook_url; ?>" target="_blank" class="btn btn-fb">
                             <i class="fab fa-facebook me-2"></i> Message on Facebook
-                        </a>
-                        <a href="<?php echo $messenger_url; ?>" target="_blank" class="btn btn-messenger">
-                            <i class="fab fa-facebook-messenger me-2"></i> Chat on Messenger
                         </a>
                     </div>
                     <p class="small text-secondary mt-3"><i class="fas fa-shield-alt"></i> Secure payment via GCash, PayMaya, or Bank Transfer</p>
@@ -1213,14 +1340,14 @@ $messenger_url = "https://m.me/JamLagz28";
         <div class="row">
             <div class="col-md-4 mb-3">
                 <h5 class="text-danger">JamLagz</h5>
-                <p class="small">Premium MLBB Account Marketplace since 2024</p>
+                <p class="small">Premium MLBB Account Marketplace since 2023</p>
                 <p class="small"><i class="fas fa-check-circle text-success"></i> 100% Verified Accounts</p>
             </div>
             <div class="col-md-4 mb-3">
                 <h6>Account Categories</h6>
                 <p class="small">
-                    <span class="d-block">Mythic Accounts</span>
-                    <span class="d-block">Legend Accounts</span>
+                    <span class="d-block">Notable Skins</span>
+                    <span class="d-block">Rare Accounts</span>
                     <span class="d-block">Collector Skin Accounts</span>
                     <span class="d-block">Starlight Member Accounts</span>
                 </p>
@@ -1233,7 +1360,7 @@ $messenger_url = "https://m.me/JamLagz28";
                     <i class="fab fa-instagram fa-lg me-3 text-secondary"></i>
                     <i class="fab fa-tiktok fa-lg text-secondary"></i>
                 </div>
-                <p class="small mt-2"><i class="fas fa-envelope"></i> support@jamlags.com</p>
+                <p class="small mt-2"><i class="fas fa-envelope"></i> jameslaag1228@gmail.com</p>
             </div>
         </div>
         <hr class="bg-secondary">
@@ -1301,18 +1428,29 @@ $messenger_url = "https://m.me/JamLagz28";
     
     // Purchase Modal Functions
     let currentProduct = null;
+    let currentPurchaseImageSrc = '';
     
     function openPurchaseModal(product) {
         currentProduct = product;
-        document.getElementById('purchaseImage').src = 'uploads/' + product.image;
+        currentPurchaseImageSrc = 'uploads/' + product.image;
+        document.getElementById('purchaseImage').src = currentPurchaseImageSrc;
         document.getElementById('purchaseName').innerText = product.name;
         document.getElementById('purchaseDescription').innerText = product.description;
         document.getElementById('purchasePhp').innerHTML = '<i class="fas fa-coins"></i> ₱' + parseFloat(product.price_php).toFixed(2);
-        document.getElementById('purchaseUsd').innerHTML = '<i class="fas fa-dollar-sign"></i> $' + parseFloat(product.price_usd).toFixed(2);
-        document.getElementById('purchaseThb').innerHTML = '<i class="fas fa-baht-sign"></i> ฿' + parseFloat(product.price_thb).toFixed(2);
+        document.getElementById('purchaseUsd').innerHTML = '<i class="fas fa-dollar-sign"></i> ' + parseFloat(product.price_usd).toFixed(2);
+        document.getElementById('purchaseThb').innerHTML = '<i class="fas fa-baht-sign"></i> ' + parseFloat(product.price_thb).toFixed(2);
         
         document.getElementById('purchaseModal').style.display = 'block';
         document.body.style.overflow = 'hidden';
+    }
+    
+    // Function to open image modal from purchase modal (clickable image)
+    function openPurchaseImageModal() {
+        if (currentPurchaseImageSrc) {
+            // Get product name for caption
+            const productName = document.getElementById('purchaseName').innerText;
+            openImageModal(currentPurchaseImageSrc, productName + ' (Account Image)');
+        }
     }
     
     function closePurchaseModal() {
