@@ -3,10 +3,10 @@
 // File: config/database.php
 // Database configuration with PDO
 // ============================================
-$host = 'sql100.infinityfree.com';
-$dbname = 'if0_41561598_jamlags_shop';
-$username = 'if0_41561598';
-$password = 'Staylegit2026';
+$host = 'localhost';
+$dbname = 'jamlags_shop';
+$username = 'root';
+$password = '';
 
 try {
     $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);

@@ -2,8 +2,8 @@
 // ============================================
 // File: index.php
 // MLBB ACCOUNTS BUY & SELL PLATFORM
-// WITH ENHANCED PURCHASE MODAL - LARGER IMAGE
-// All original functions preserved
+// FULLY RESPONSIVE - ALL DEVICES
+// All original functions preserved + Installment Plans
 // ============================================
 session_start();
 require_once 'config/database.php';
@@ -19,7 +19,11 @@ $sold_products = $stmt_sold->fetchAll(PDO::FETCH_ASSOC);
 $stmt_testimonials = $conn->query("SELECT * FROM testimonials WHERE status = 'active' ORDER BY id DESC LIMIT 10");
 $testimonials = $stmt_testimonials->fetchAll(PDO::FETCH_ASSOC);
 
-// Facebook Page URL (Update with your actual Facebook page)
+// Fetch active installment plans (NEW)
+$stmt_installments = $conn->query("SELECT * FROM installment_plans WHERE status = 'active' ORDER BY id DESC");
+$installment_plans = $stmt_installments->fetchAll(PDO::FETCH_ASSOC);
+
+// Facebook Page URL
 $facebook_url = "https://web.facebook.com/JamLagz2025/";
 $messenger_url = "https://m.me/JamLagz2025";
 ?>
@@ -27,7 +31,7 @@ $messenger_url = "https://m.me/JamLagz2025";
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>JamLagz | MLBB Accounts Buy & Sell - Premium Mobile Legends Accounts</title>
     <!-- Bootstrap 5 + Icons + Custom Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -44,7 +48,7 @@ $messenger_url = "https://m.me/JamLagz2025";
             --legendary-orange: #f39c12;
             --mythic-blue: #3498db;
             --fb-blue: #1877f2;
-            --messenger-blue: #0084ff;
+            --installment-green: #2ecc71;
         }
         
         * {
@@ -81,7 +85,7 @@ $messenger_url = "https://m.me/JamLagz2025";
         ::-webkit-scrollbar-track { background: #0a0c15; }
         ::-webkit-scrollbar-thumb { background: var(--mlbb-red); border-radius: 10px; }
         
-        /* Navbar */
+        /* ========== FULLY RESPONSIVE NAVBAR ========== */
         .navbar {
             background: rgba(5, 7, 14, 0.95);
             backdrop-filter: blur(15px);
@@ -94,28 +98,38 @@ $messenger_url = "https://m.me/JamLagz2025";
         .navbar-brand {
             font-family: 'Orbitron', monospace;
             font-weight: 800;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             background: linear-gradient(135deg, #fff, var(--mlbb-red), var(--mlbb-gold));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
         
-        .brand-icon {
-            background: linear-gradient(135deg, var(--mlbb-red), #b71c1c);
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 1.2rem;
-            margin-right: 10px;
-            box-shadow: 0 0 15px rgba(224,58,58,0.5);
+        @media (min-width: 768px) {
+            .navbar-brand { font-size: 1.8rem; }
+        }
+        
+        .navbar-brand img {
+            width: 30px;
+        }
+        
+        @media (min-width: 768px) {
+            .navbar-brand img { width: 40px; }
         }
         
         .nav-link {
             font-weight: 600;
             color: #e0e0e0 !important;
-            margin: 0 8px;
+            margin: 0 5px;
             transition: 0.3s;
-            position: relative;
+            font-size: 0.85rem;
+        }
+        
+        @media (min-width: 768px) {
+            .nav-link {
+                margin: 0 8px;
+                font-size: 1rem;
+            }
         }
         
         .nav-link::after {
@@ -133,53 +147,43 @@ $messenger_url = "https://m.me/JamLagz2025";
         .nav-link:hover::after, .nav-link.active::after { width: 70%; }
         .nav-link:hover, .nav-link.active { color: var(--mlbb-red) !important; }
         
-        /* Hero Section */
+        /* ========== RESPONSIVE HERO SECTION ========== */
         .hero-section {
             position: relative;
             text-align: center;
-            padding: 5rem 1rem 6rem;
+            padding: 3rem 1rem 4rem;
             background: linear-gradient(180deg, rgba(5,7,14,0.9) 0%, rgba(224,58,58,0.2) 100%);
             overflow: hidden;
             z-index: 1;
         }
         
-        .hero-section::before {
-            content: '👑';
-            font-size: 300px;
-            position: absolute;
-            bottom: -80px;
-            right: -80px;
-            opacity: 0.03;
-            pointer-events: none;
-            transform: rotate(-15deg);
-        }
-        
-        .hero-section::after {
-            content: '⚔️';
-            font-size: 280px;
-            position: absolute;
-            top: -100px;
-            left: -80px;
-            opacity: 0.03;
-            pointer-events: none;
-            transform: rotate(10deg);
+        @media (min-width: 768px) {
+            .hero-section { padding: 5rem 1rem 6rem; }
         }
         
         .hero-badge {
             background: linear-gradient(135deg, rgba(224,58,58,0.3), rgba(255,217,102,0.2));
             border-radius: 50px;
-            padding: 8px 24px;
+            padding: 6px 16px;
             display: inline-block;
             backdrop-filter: blur(8px);
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             border: 1px solid rgba(224,58,58,0.5);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             font-weight: 600;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-badge {
+                padding: 8px 24px;
+                font-size: 0.85rem;
+                margin-bottom: 1.5rem;
+            }
         }
         
         .hero-title {
             font-family: 'Orbitron', monospace;
-            font-size: 3.5rem;
+            font-size: 1.8rem;
             font-weight: 800;
             background: linear-gradient(135deg, #fff, var(--mlbb-red), var(--mlbb-gold), #fff);
             background-size: 300% auto;
@@ -187,7 +191,15 @@ $messenger_url = "https://m.me/JamLagz2025";
             background-clip: text;
             color: transparent;
             animation: shine 3s linear infinite;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        @media (min-width: 576px) {
+            .hero-title { font-size: 2.5rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .hero-title { font-size: 3.5rem; }
         }
         
         @keyframes shine {
@@ -196,35 +208,57 @@ $messenger_url = "https://m.me/JamLagz2025";
         }
         
         .hero-subtitle {
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             color: #b0b0b0;
             max-width: 700px;
             margin: 0 auto;
         }
         
-        /* Rank Badges */
+        @media (min-width: 768px) {
+            .hero-subtitle { font-size: 1.2rem; }
+        }
+        
+        /* Rank Badges - Responsive */
         .rank-strip {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 0.5rem;
             flex-wrap: wrap;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        @media (min-width: 576px) {
+            .rank-strip { gap: 1rem; }
+        }
+        
+        @media (min-width: 768px) {
+            .rank-strip { gap: 1.5rem; margin-top: 2rem; }
         }
         
         .rank-badge {
             background: rgba(0,0,0,0.5);
             backdrop-filter: blur(4px);
-            padding: 8px 20px;
+            padding: 4px 10px;
             border-radius: 40px;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.65rem;
             transition: 0.3s;
-            border-left: 3px solid;
+            border-left: 2px solid;
         }
         
-        .rank-badge:hover {
-            transform: translateY(-3px);
-            background: rgba(224,58,58,0.2);
+        @media (min-width: 576px) {
+            .rank-badge {
+                padding: 6px 14px;
+                font-size: 0.75rem;
+                border-left: 3px solid;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .rank-badge {
+                padding: 8px 20px;
+                font-size: 0.85rem;
+            }
         }
         
         .rank-warrior { border-left-color: #8e44ad; color: #8e44ad; }
@@ -233,15 +267,19 @@ $messenger_url = "https://m.me/JamLagz2025";
         .rank-mythic { border-left-color: var(--mythic-blue); color: var(--mythic-blue); }
         .rank-glory { border-left-color: var(--mlbb-gold); color: var(--mlbb-gold); }
         
-        /* Product Cards */
+        /* Section Titles - Responsive */
         .section-title {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (min-width: 768px) {
+            .section-title { margin-bottom: 3rem; }
         }
         
         .section-title h2 {
             font-family: 'Orbitron', monospace;
-            font-size: 2.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             display: inline-block;
             background: linear-gradient(135deg, #fff, var(--mlbb-red));
@@ -250,20 +288,37 @@ $messenger_url = "https://m.me/JamLagz2025";
             color: transparent;
         }
         
-        .section-title p {
-            color: #8a8a8a;
-            font-size: 1rem;
+        @media (min-width: 576px) {
+            .section-title h2 { font-size: 1.8rem; }
         }
         
+        @media (min-width: 768px) {
+            .section-title h2 { font-size: 2.5rem; }
+        }
+        
+        .section-title p {
+            color: #8a8a8a;
+            font-size: 0.8rem;
+        }
+        
+        @media (min-width: 768px) {
+            .section-title p { font-size: 1rem; }
+        }
+        
+        /* Product Cards - Responsive Grid */
         .product-card {
             background: linear-gradient(145deg, #0f121c, #0a0d15);
-            border-radius: 24px;
+            border-radius: 20px;
             border: 1px solid rgba(224,58,58,0.2);
             transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             overflow: hidden;
             height: 100%;
             position: relative;
             backdrop-filter: blur(4px);
+        }
+        
+        @media (min-width: 768px) {
+            .product-card { border-radius: 24px; }
         }
         
         .product-card::before {
@@ -280,193 +335,246 @@ $messenger_url = "https://m.me/JamLagz2025";
         
         .product-card:hover::before { transform: translateX(0); }
         .product-card:hover {
-            transform: translateY(-12px);
+            transform: translateY(-8px);
             border-color: var(--mlbb-red);
             box-shadow: 0 25px 40px -12px rgba(224,58,58,0.4);
         }
         
-        /* Sold Card Style */
-        .sold-card {
-            opacity: 0.8;
-            filter: grayscale(0.2);
+        @media (min-width: 768px) {
+            .product-card:hover { transform: translateY(-12px); }
         }
         
         .card-img-top {
             object-fit: cover;
             width: 100%;
-            height: 220px;
+            height: 180px;
             transition: 0.5s;
             background: linear-gradient(135deg, #1a1f2e, #0f121c);
             cursor: pointer;
         }
         
-        .card-img-top:hover {
-            transform: scale(1.05);
-            filter: brightness(1.1);
+        @media (min-width: 576px) {
+            .card-img-top { height: 200px; }
         }
         
-        .image-hint {
-            position: absolute;
-            bottom: 10px;
-            right: 15px;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            z-index: 3;
-            opacity: 0;
-            transition: 0.3s;
-            pointer-events: none;
+        @media (min-width: 768px) {
+            .card-img-top { height: 220px; }
         }
         
-        .product-card:hover .image-hint { opacity: 1; }
-        
-        .account-tag {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
-            padding: 5px 12px;
-            border-radius: 30px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            z-index: 2;
-            border-left: 3px solid;
+        .card-body {
+            padding: 1rem;
         }
         
-        .tag-mythic { border-left-color: var(--mythic-blue); color: var(--mythic-blue); }
-        .tag-legend { border-left-color: var(--legendary-orange); color: var(--legendary-orange); }
-        .tag-epic { border-left-color: var(--epic-purple); color: var(--epic-purple); }
-        .tag-collector { border-left-color: var(--mlbb-gold); color: var(--mlbb-gold); }
-        
-        .account-stats {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin: 12px 0;
-            padding: 8px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.75rem;
-            background: rgba(0,0,0,0.4);
-            padding: 4px 10px;
-            border-radius: 20px;
-        }
-        
-        .badge-currency {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 15px 0 12px;
-        }
-        
-        .price-chip {
-            background: rgba(0,0,0,0.5);
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            backdrop-filter: blur(4px);
-            transition: 0.2s;
-        }
-        
-        .price-php { color: #4caf50; border-left: 3px solid #4caf50; background: rgba(76,175,80,0.1);}
-        .price-usd { color: #2196f3; border-left: 3px solid #2196f3;}
-        .price-thb { color: #ff9800; border-left: 3px solid #ff9800;}
-        
-        .btn-buy {
-            background: linear-gradient(95deg, var(--mlbb-red), #b71c1c);
-            border: none;
-            border-radius: 50px;
-            padding: 12px 0;
-            font-weight: 700;
-            letter-spacing: 1px;
-            transition: 0.25s;
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(224,58,58,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-buy::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
-        }
-        
-        .btn-buy:hover::before { left: 100%; }
-        .btn-buy:hover {
-            background: linear-gradient(95deg, #b71c1c, var(--mlbb-red));
-            transform: scale(0.98);
-            box-shadow: 0 6px 20px rgba(224,58,58,0.5);
-        }
-        
-        .btn-disabled {
-            background: linear-gradient(95deg, #6c757d, #495057);
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-        
-        .btn-disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .featured-badge {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: linear-gradient(135deg, var(--mlbb-gold), #ffaa33);
-            color: #1a1f2e;
-            font-weight: 800;
-            border-radius: 30px;
-            padding: 5px 15px;
-            font-size: 0.7rem;
-            z-index: 2;
-            box-shadow: 0 0 10px rgba(255,217,102,0.5);
-        }
-        
-        .sold-badge {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: #dc3545;
-            color: white;
-            font-weight: 800;
-            border-radius: 30px;
-            padding: 5px 15px;
-            font-size: 0.7rem;
-            z-index: 2;
-            box-shadow: 0 0 10px rgba(220,53,69,0.5);
+        @media (min-width: 768px) {
+            .card-body { padding: 1.25rem; }
         }
         
         .card-title {
             font-family: 'Orbitron', monospace;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1rem;
             margin-bottom: 8px;
         }
         
-        .card-text-desc {
-            font-size: 0.85rem;
-            color: #a0a0a0;
-            min-height: 55px;
+        @media (min-width: 768px) {
+            .card-title { font-size: 1.2rem; }
         }
         
-        /* Image Modal Styles */
+        .card-text-desc {
+            font-size: 0.75rem;
+            color: #a0a0a0;
+            min-height: 45px;
+        }
+        
+        @media (min-width: 768px) {
+            .card-text-desc {
+                font-size: 0.85rem;
+                min-height: 55px;
+            }
+        }
+        
+        /* Account Stats - Responsive */
+        .account-stats {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+            padding: 6px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        @media (min-width: 768px) {
+            .account-stats { gap: 12px; margin: 12px 0; padding: 8px 0; }
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.65rem;
+            background: rgba(0,0,0,0.4);
+            padding: 3px 6px;
+            border-radius: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .stat-item {
+                gap: 5px;
+                font-size: 0.75rem;
+                padding: 4px 10px;
+            }
+        }
+        
+        /* Price Chips */
+        .badge-currency {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin: 10px 0 8px;
+        }
+        
+        @media (min-width: 768px) {
+            .badge-currency {
+                gap: 10px;
+                margin: 15px 0 12px;
+            }
+        }
+        
+        .price-chip {
+            background: rgba(0,0,0,0.5);
+            padding: 4px 8px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            backdrop-filter: blur(4px);
+        }
+        
+        @media (min-width: 768px) {
+            .price-chip {
+                padding: 6px 14px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        .price-php { color: #4caf50; border-left: 2px solid #4caf50; background: rgba(76,175,80,0.1);}
+        .price-usd { color: #2196f3; border-left: 2px solid #2196f3;}
+        .price-thb { color: #ff9800; border-left: 2px solid #ff9800;}
+        
+        /* Buy Button */
+        .btn-buy {
+            background: linear-gradient(95deg, var(--mlbb-red), #b71c1c);
+            border: none;
+            border-radius: 40px;
+            padding: 8px 0;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: 0.25s;
+            width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .btn-buy {
+                padding: 12px 0;
+                font-size: 1rem;
+            }
+        }
+        
+        .featured-badge, .sold-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            border-radius: 30px;
+            padding: 3px 10px;
+            font-size: 0.6rem;
+            z-index: 2;
+        }
+        
+        @media (min-width: 768px) {
+            .featured-badge, .sold-badge {
+                top: 15px;
+                left: 15px;
+                padding: 5px 15px;
+                font-size: 0.7rem;
+            }
+        }
+        
+        .featured-badge {
+            background: linear-gradient(135deg, var(--mlbb-gold), #ffaa33);
+            color: #1a1f2e;
+            font-weight: 800;
+        }
+        
+        .sold-badge {
+            background: #dc3545;
+            color: white;
+            font-weight: 800;
+        }
+        
+        /* Installment Card Styles (NEW) */
+        .installment-card {
+            background: linear-gradient(145deg, #0f121c, #0a0d15);
+            border-radius: 20px;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            transition: all 0.4s ease;
+            overflow: hidden;
+            height: 100%;
+            position: relative;
+        }
+        
+        .installment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--installment-green), #27ae60, var(--installment-green));
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+        
+        .installment-card:hover::before { transform: translateX(0); }
+        .installment-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--installment-green);
+            box-shadow: 0 25px 40px -12px rgba(46, 204, 113, 0.3);
+        }
+        
+        .installment-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, var(--installment-green), #27ae60);
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: white;
+            z-index: 2;
+        }
+        
+        @media (min-width: 768px) {
+            .installment-badge {
+                top: 15px;
+                right: 15px;
+                padding: 5px 15px;
+                font-size: 0.7rem;
+            }
+        }
+        
+        .installment-icon {
+            font-size: 2rem;
+            color: var(--installment-green);
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .installment-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        }
+        
+        /* Image Modal - Responsive */
         .image-modal {
             display: none;
             position: fixed;
@@ -477,19 +585,13 @@ $messenger_url = "https://m.me/JamLagz2025";
             height: 100%;
             background-color: rgba(0,0,0,0.95);
             backdrop-filter: blur(15px);
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
         
         .modal-content-image {
             position: relative;
             margin: auto;
-            padding: 20px;
-            width: 90%;
+            padding: 15px;
+            width: 95%;
             max-width: 1200px;
             height: 90vh;
             display: flex;
@@ -504,136 +606,35 @@ $messenger_url = "https://m.me/JamLagz2025";
             max-height: 85vh;
             object-fit: contain;
             border-radius: 16px;
-            box-shadow: 0 0 50px rgba(224,58,58,0.3);
-            animation: zoomIn 0.3s ease;
-        }
-        
-        @keyframes zoomIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
         }
         
         .close-modal {
             position: absolute;
-            top: 30px;
-            right: 50px;
+            top: 15px;
+            right: 15px;
             color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            z-index: 10000;
-            width: 50px;
-            height: 50px;
+            font-size: 30px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(224,58,58,0.3);
             border-radius: 50%;
-            backdrop-filter: blur(5px);
-        }
-        
-        .close-modal:hover {
-            color: var(--mlbb-red);
-            transform: rotate(90deg);
-            background: rgba(224,58,58,0.6);
-        }
-        
-        .modal-caption {
-            position: absolute;
-            bottom: 30px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: white;
-            font-size: 1rem;
-            background: rgba(0,0,0,0.7);
-            padding: 12px;
-            margin: 0 auto;
-            width: fit-content;
-            border-radius: 40px;
-            backdrop-filter: blur(5px);
-        }
-        
-        .zoom-buttons {
-            position: absolute;
-            bottom: 100px;
-            right: 50px;
-            display: flex;
-            gap: 10px;
-            z-index: 10000;
-        }
-        
-        .zoom-btn {
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
             cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
         }
         
-        .zoom-btn:hover {
-            background: var(--mlbb-red);
-            transform: scale(1.1);
+        @media (min-width: 768px) {
+            .close-modal {
+                top: 30px;
+                right: 50px;
+                font-size: 40px;
+                width: 50px;
+                height: 50px;
+            }
         }
         
-        .download-btn-modal {
-            position: absolute;
-            bottom: 100px;
-            left: 50px;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            z-index: 10000;
-        }
-        
-        .download-btn-modal:hover {
-            background: #4caf50;
-            transform: scale(1.05);
-        }
-        
-        .back-to-index {
-            position: absolute;
-            top: 30px;
-            left: 50px;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            padding: 10px 20px;
-            border-radius: 40px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .back-to-index:hover {
-            background: var(--mlbb-red);
-            color: white;
-            transform: translateX(-5px);
-        }
-        
-        /* Enhanced Purchase Modal Styles */
+        /* Purchase Modal - Fully Responsive with Scroll */
         .purchase-modal {
             display: none;
             position: fixed;
@@ -644,54 +645,62 @@ $messenger_url = "https://m.me/JamLagz2025";
             height: 100%;
             background-color: rgba(0,0,0,0.95);
             backdrop-filter: blur(15px);
-            animation: fadeIn 0.3s ease;
         }
         
         .purchase-modal-content {
             position: relative;
             background: linear-gradient(145deg, #0f121c, #0a0d15);
-            margin: 3% auto;
+            margin: 5% auto;
             padding: 0;
-            width: 90%;
+            width: 92%;
             max-width: 1100px;
-            border-radius: 32px;
+            max-height: 90vh;
+            border-radius: 24px;
             border: 1px solid rgba(224,58,58,0.3);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            animation: slideUp 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
         
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
+        @media (min-width: 768px) {
+            .purchase-modal-content {
+                margin: 2% auto;
+                width: 90%;
+                max-height: 94vh;
+                border-radius: 32px;
             }
         }
         
         .purchase-modal-header {
-            padding: 20px 25px;
+            padding: 15px 20px;
             border-bottom: 1px solid rgba(224,58,58,0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
+            background: rgba(10, 13, 21, 0.95);
+        }
+        
+        @media (min-width: 768px) {
+            .purchase-modal-header { padding: 20px 25px; }
         }
         
         .purchase-modal-header h3 {
             margin: 0;
             font-family: 'Orbitron', monospace;
             color: var(--mlbb-red);
-            font-size: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .purchase-modal-header h3 { font-size: 1.5rem; }
         }
         
         .close-purchase {
-            font-size: 28px;
+            font-size: 24px;
             cursor: pointer;
-            transition: 0.3s;
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -699,68 +708,64 @@ $messenger_url = "https://m.me/JamLagz2025";
             background: rgba(255,255,255,0.1);
         }
         
-        .close-purchase:hover {
-            background: var(--mlbb-red);
-            transform: rotate(90deg);
+        @media (min-width: 768px) {
+            .close-purchase { font-size: 28px; width: 35px; height: 35px; }
         }
         
+        /* SCROLLABLE BODY */
         .purchase-modal-body {
-            padding: 30px;
+            padding: 15px 20px;
             display: flex;
-            gap: 35px;
+            gap: 20px;
             flex-wrap: wrap;
+            overflow-y: auto;
+            overflow-x: hidden;
+            flex: 1;
+            scrollbar-width: thin;
+        }
+        
+        @media (min-width: 768px) {
+            .purchase-modal-body {
+                padding: 25px 30px;
+                gap: 35px;
+            }
+        }
+        
+        .purchase-modal-body::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        @media (min-width: 768px) {
+            .purchase-modal-body::-webkit-scrollbar { width: 6px; }
         }
         
         .purchase-product-image {
-            flex: 1.2;
-            min-width: 320px;
+            flex: 1;
+            min-width: 250px;
             text-align: center;
             cursor: pointer;
             position: relative;
         }
         
-        /* Make the purchase modal image clickable with hover effect */
+        @media (min-width: 768px) {
+            .purchase-product-image { min-width: 320px; }
+        }
+        
         .purchase-product-image img {
             width: 100%;
-            max-width: 450px;
+            max-width: 100%;
             height: auto;
-            max-height: 450px;
+            max-height: 250px;
             object-fit: contain;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            border: 1px solid rgba(224,58,58,0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
+            border-radius: 16px;
         }
         
-        .purchase-product-image img:hover {
-            transform: scale(1.02);
-            box-shadow: 0 20px 40px rgba(224,58,58,0.4);
-            border-color: var(--mlbb-red);
+        @media (min-width: 576px) {
+            .purchase-product-image img { max-height: 300px; }
         }
         
-        /* Image hint overlay for purchase modal */
-        .purchase-image-hint {
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(8px);
-            padding: 6px 15px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            z-index: 5;
-            opacity: 0;
-            transition: 0.3s;
-            pointer-events: none;
-            white-space: nowrap;
-            color: var(--mlbb-gold);
-            font-weight: 500;
-        }
-        
-        .purchase-product-image:hover .purchase-image-hint {
-            opacity: 1;
+        @media (min-width: 768px) {
+            .purchase-product-image img { max-height: 400px; max-width: 450px; }
         }
         
         .purchase-product-info {
@@ -768,103 +773,115 @@ $messenger_url = "https://m.me/JamLagz2025";
         }
         
         .purchase-product-info h4 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
             font-family: 'Orbitron', monospace;
             color: var(--mlbb-gold);
         }
         
+        @media (min-width: 768px) {
+            .purchase-product-info h4 { font-size: 1.8rem; margin-bottom: 15px; }
+        }
+        
         .purchase-product-info .description {
             color: #b0b0b0;
-            margin-bottom: 25px;
-            line-height: 1.8;
-            font-size: 1rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            font-size: 0.8rem;
             background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 16px;
-            border-left: 3px solid var(--mlbb-red);
+            padding: 10px;
+            border-radius: 12px;
+        }
+        
+        @media (min-width: 768px) {
+            .purchase-product-info .description {
+                margin-bottom: 25px;
+                line-height: 1.8;
+                font-size: 1rem;
+                padding: 15px;
+                border-radius: 16px;
+            }
         }
         
         .purchase-prices {
             display: flex;
-            gap: 15px;
-            margin: 25px 0;
+            gap: 8px;
+            margin: 15px 0;
             flex-wrap: wrap;
+        }
+        
+        @media (min-width: 768px) {
+            .purchase-prices { gap: 15px; margin: 25px 0; }
         }
         
         .purchase-price {
             background: rgba(0,0,0,0.5);
-            padding: 10px 20px;
+            padding: 6px 12px;
             border-radius: 40px;
             font-weight: 700;
-            font-size: 1.1rem;
-            backdrop-filter: blur(5px);
+            font-size: 0.8rem;
         }
         
-        .price-php { color: #4caf50; border-left: 3px solid #4caf50; }
-        .price-usd { color: #2196f3; border-left: 3px solid #2196f3; }
-        .price-thb { color: #ff9800; border-left: 3px solid #ff9800; }
+        @media (min-width: 768px) {
+            .purchase-price { padding: 10px 20px; font-size: 1.1rem; }
+        }
         
         .contact-options {
-            margin-top: 30px;
-            padding-top: 25px;
+            margin-top: 15px;
+            padding-top: 15px;
             border-top: 1px solid rgba(255,255,255,0.15);
         }
         
+        @media (min-width: 768px) {
+            .contact-options { margin-top: 30px; padding-top: 25px; }
+        }
+        
         .contact-options h5 {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: var(--mlbb-gold);
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
         
-        .contact-options p {
-            font-size: 0.9rem;
-            margin-bottom: 20px;
+        @media (min-width: 768px) {
+            .contact-options h5 { margin-bottom: 15px; font-size: 1.2rem; }
         }
         
-        /* New contact info styles - Phone and Email */
         .contact-info-list {
             list-style: none;
             padding: 0;
-            margin: 20px 0;
+            margin: 15px 0;
         }
         
         .contact-info-list li {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
             background: rgba(0,0,0,0.3);
-            padding: 12px 18px;
-            border-radius: 50px;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.08);
-            transition: 0.2s;
+            padding: 8px 12px;
+            border-radius: 40px;
+            flex-wrap: wrap;
         }
         
-        .contact-info-list li:hover {
-            background: rgba(224,58,58,0.15);
-            border-color: rgba(224,58,58,0.3);
-            transform: translateX(5px);
+        @media (min-width: 576px) {
+            .contact-info-list li { flex-wrap: nowrap; }
+        }
+        
+        @media (min-width: 768px) {
+            .contact-info-list li {
+                gap: 12px;
+                margin-bottom: 15px;
+                padding: 12px 18px;
+            }
         }
         
         .contact-info-list i {
-            font-size: 1.4rem;
-            width: 32px;
-            text-align: center;
+            font-size: 1.1rem;
+            width: 24px;
         }
         
-        .contact-info-list .fa-phone-alt {
-            color: #4caf50;
-        }
-        
-        .contact-info-list .fa-envelope {
-            color: #ff9800;
-        }
-        
-        .contact-info-list .contact-text {
-            font-weight: 500;
-            letter-spacing: 0.3px;
+        @media (min-width: 768px) {
+            .contact-info-list i { font-size: 1.4rem; width: 32px; }
         }
         
         .contact-info-list .contact-value {
@@ -873,95 +890,174 @@ $messenger_url = "https://m.me/JamLagz2025";
             margin-left: auto;
         }
         
-        .contact-buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-        
         .btn-fb {
             background: var(--fb-blue);
             border: none;
-            border-radius: 50px;
-            padding: 12px 28px;
+            border-radius: 40px;
+            padding: 8px 20px;
             font-weight: 600;
+            font-size: 0.8rem;
             transition: 0.3s;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
         }
         
-        .btn-fb:hover {
-            transform: translateY(-3px);
-            filter: brightness(1.1);
+        @media (min-width: 768px) {
+            .btn-fb { padding: 12px 28px; font-size: 1rem; }
         }
         
-        /* Removed .btn-messenger styles as requested */
-        
+        /* Feature Cards - Responsive */
         .features-section {
             background: linear-gradient(180deg, transparent, rgba(224,58,58,0.05), transparent);
-            padding: 3rem 0;
-            margin: 2rem 0;
+            padding: 2rem 0;
+            margin: 1rem 0;
+        }
+        
+        @media (min-width: 768px) {
+            .features-section { padding: 3rem 0; margin: 2rem 0; }
         }
         
         .feature-card {
             background: rgba(15, 18, 28, 0.7);
             backdrop-filter: blur(10px);
-            border-radius: 28px;
-            padding: 2rem;
+            border-radius: 20px;
+            padding: 1.2rem;
             text-align: center;
             transition: 0.3s;
             border: 1px solid rgba(224,58,58,0.2);
             height: 100%;
         }
         
-        .feature-card:hover {
-            border-color: var(--mlbb-red);
-            transform: translateY(-5px);
+        @media (min-width: 768px) {
+            .feature-card { padding: 2rem; border-radius: 28px; }
         }
         
         .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
             display: inline-block;
         }
         
-        .seller-cta {
-            background: linear-gradient(135deg, rgba(224,58,58,0.15), rgba(0,0,0,0.5));
-            border-radius: 28px;
-            padding: 2.5rem;
-            text-align: center;
-            margin: 2rem 0;
-            border: 1px solid rgba(224,58,58,0.3);
+        @media (min-width: 768px) {
+            .feature-icon { font-size: 3rem; margin-bottom: 1rem; }
         }
         
+        .feature-card h5 {
+            font-size: 0.9rem;
+        }
+        
+        @media (min-width: 768px) {
+            .feature-card h5 { font-size: 1.25rem; }
+        }
+        
+        .feature-card p {
+            font-size: 0.7rem;
+        }
+        
+        @media (min-width: 768px) {
+            .feature-card p { font-size: 0.85rem; }
+        }
+        
+        /* Seller CTA - Responsive */
+        .seller-cta {
+            background: linear-gradient(135deg, rgba(224,58,58,0.15), rgba(0,0,0,0.5));
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        @media (min-width: 768px) {
+            .seller-cta {
+                border-radius: 28px;
+                padding: 2.5rem;
+                margin: 2rem 0;
+            }
+        }
+        
+        .seller-cta h3 {
+            font-size: 1.2rem;
+        }
+        
+        @media (min-width: 768px) {
+            .seller-cta h3 { font-size: 1.8rem; }
+        }
+        
+        /* Stats Bar - Responsive */
+        .stats-bar .p-3 h3 {
+            font-size: 1.1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .stats-bar .p-3 h3 { font-size: 1.5rem; }
+        }
+        
+        /* Footer - Responsive */
         footer {
             background: #03050a;
             border-top: 1px solid rgba(224,58,58,0.3);
-            margin-top: 4rem;
-            padding: 2rem 0;
+            margin-top: 2rem;
+            padding: 1.5rem 0;
         }
         
-        @media (max-width: 768px) {
-            .hero-title { font-size: 2rem; }
-            .hero-section { padding: 3rem 1rem; }
-            .section-title h2 { font-size: 1.8rem; }
-            .rank-strip { gap: 0.8rem; }
-            .rank-badge { padding: 4px 12px; font-size: 0.7rem; }
-            .close-modal { top: 20px; right: 20px; font-size: 30px; width: 40px; height: 40px; }
-            .zoom-buttons { bottom: 30px; right: 20px; }
-            .download-btn-modal { bottom: 30px; left: 20px; padding: 8px 16px; font-size: 0.8rem; }
-            .back-to-index { top: 20px; left: 20px; padding: 6px 15px; font-size: 0.85rem; }
-            .purchase-modal-body { flex-direction: column; }
-            .purchase-product-image { min-width: 100%; }
-            .purchase-product-image img { max-width: 100%; }
-            .purchase-product-info h4 { font-size: 1.4rem; }
-            .contact-info-list li { flex-wrap: wrap; }
-            .contact-info-list .contact-value { margin-left: 0; margin-top: 5px; }
-            .purchase-image-hint { font-size: 0.65rem; white-space: nowrap; }
+        @media (min-width: 768px) {
+            footer { margin-top: 4rem; padding: 2rem 0; }
         }
         
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .purchase-product-image { min-width: 280px; }
-            .purchase-product-image img { max-width: 350px; }
+        /* Utilities */
+        .image-hint, .purchase-image-hint {
+            font-size: 0.6rem;
+            padding: 3px 8px;
+        }
+        
+        @media (min-width: 768px) {
+            .image-hint, .purchase-image-hint {
+                font-size: 0.75rem;
+                padding: 6px 15px;
+            }
+        }
+        
+        .zoom-buttons {
+            bottom: 80px;
+            right: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .zoom-buttons { bottom: 100px; right: 50px; }
+        }
+        
+        .zoom-btn {
+            width: 35px;
+            height: 35px;
+            font-size: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .zoom-btn { width: 45px; height: 45px; font-size: 1.2rem; }
+        }
+        
+        .download-btn-modal {
+            bottom: 80px;
+            left: 20px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+        }
+        
+        @media (min-width: 768px) {
+            .download-btn-modal { bottom: 100px; left: 50px; padding: 12px 20px; font-size: 1rem; }
+        }
+        
+        .back-to-index {
+            top: 15px;
+            left: 15px;
+            padding: 6px 12px;
+            font-size: 0.7rem;
+        }
+        
+        @media (min-width: 768px) {
+            .back-to-index { top: 30px; left: 50px; padding: 10px 20px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -971,7 +1067,7 @@ $messenger_url = "https://m.me/JamLagz2025";
 <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
         <a class="navbar-brand" href="index.php">
-          <img src="images/skull.png" alt="Skull Icon" width="40"> JAM<span style="color: var(--mlbb-red);">LAGZ</span>
+          <img src="images/skull.png" alt="Skull Icon" width="35"> JAM<span style="color: var(--mlbb-red);">LAGZ</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="background: var(--mlbb-red); border-radius: 8px;">
             <span class="navbar-toggler-icon"></span>
@@ -980,6 +1076,7 @@ $messenger_url = "https://m.me/JamLagz2025";
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link active" href="index.php"><i class="fas fa-home"></i> Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#accounts"><i class="fas fa-users"></i> MLBB Accounts</a></li>
+                <li class="nav-item"><a class="nav-link" href="#installments"><i class="fas fa-calendar-alt"></i> Installment</a></li>
                 <li class="nav-item"><a class="nav-link" href="#sell"><i class="fas fa-dollar-sign"></i> Sell Account</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin/login.php"><i class="fas fa-crown"></i> Admin</a></li>
                 <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-headset"></i> Support</a></li>
@@ -992,7 +1089,7 @@ $messenger_url = "https://m.me/JamLagz2025";
 <div class="hero-section">
     <div class="container">
         <div class="hero-badge">
-            <i class="fas fa-trophy"></i> #1 MLBB Account Marketplace PH <i class="fas fa-shield-alt"></i>
+            <i class="fas fa-trophy"></i> MLBB Account Marketplace PH <i class="fas fa-shield-alt"></i>
         </div>
         <h1 class="hero-title">BUY & SELL<br>MLBB ACCOUNTS</h1>
         <p class="hero-subtitle">Premium Mobile Legends Accounts with High Ranks, Rare Skins, and Collector Items. 100% Safe & Secure Transactions!</p>
@@ -1028,23 +1125,23 @@ $messenger_url = "https://m.me/JamLagz2025";
                         <?php endif; ?>
                         
                         <?php
-                        $rank_class = 'tag-epic';
+                        $rank_class = 'IMAGE DETAILS';
                         $rank_icon = '<i class="fas fa-star"></i>';
-                        $rank_name = 'EPIC';
+                        $rank_name = 'IMAGE DETAILS';
                         $product_text = strtolower($product['name'] . ' ' . $product['description']);
                         
-                        if (strpos($product_text, 'mythic') !== false) {
+                        if (strpos($product_text, 'IMAGE DETAILS') !== false) {
                             $rank_class = 'tag-mythic';
                             $rank_icon = '<i class="fas fa-dragon"></i>';
-                            $rank_name = 'MYTHIC';
-                        } elseif (strpos($product_text, 'legend') !== false || strpos($product_text, 'legendary') !== false) {
+                            $rank_name = 'IMAGE DETAILS';
+                        } elseif (strpos($product_text, 'legend') !== false || strpos($product_text, 'IMAGE DETAILS') !== false) {
                             $rank_class = 'tag-legend';
                             $rank_icon = '<i class="fas fa-crown"></i>';
-                            $rank_name = 'LEGEND';
-                        } elseif (strpos($product_text, 'collector') !== false) {
+                            $rank_name = 'IMAGE DETAILS';
+                        } elseif (strpos($product_text, 'IMAGE DETAILS') !== false) {
                             $rank_class = 'tag-collector';
                             $rank_icon = '<i class="fas fa-gem"></i>';
-                            $rank_name = 'COLLECTOR';
+                            $rank_name = 'IMAGE DETAILS';
                         }
                         ?>
                         <span class="account-tag <?php echo $rank_class; ?>">
@@ -1070,13 +1167,13 @@ $messenger_url = "https://m.me/JamLagz2025";
                                 <span class="stat-item"><i class="fas fa-chart-line"></i> <?php echo $product['skins'] ?? 0; ?>+ Skins</span>
                                 <span class="stat-item"><i class="fas fa-crown"></i> <?php echo $product['heroes'] ?? 0; ?> Heroes</span>
                                 <span class="stat-item"><i class="fas fa-gem"></i> <?php echo $product['diamonds'] ?? 0; ?> Diamonds</span>
-                                <span class="stat-item"><i class="fas fa-calendar"></i> <?php echo $product['account_year'] ?? 2024; ?> Account</span>
+                                <span class="stat-item"><i class="fas fa-calendar"></i> <?php echo $product['account_year'] ?? 2050; ?> Account</span>
                             </div>
                             
                             <div class="badge-currency">
                                 <span class="price-chip price-php"><i class="fas fa-coins"></i> ₱<?php echo number_format($product['price_php'], 2); ?></span>
-                                <span class="price-chip price-usd"><i class="fas fa-dollar-sign"></i> <?php echo number_format($product['price_usd'], 2); ?></span>
-                                <span class="price-chip price-thb"><i class="fas fa-baht-sign"></i> <?php echo number_format($product['price_thb'], 2); ?></span>
+                                <span class="price-chip price-usd"><i class="fas fa-dollar-sign"></i> $<?php echo number_format($product['price_usd'], 2); ?></span>
+                                <span class="price-chip price-thb"><i class="fas fa-baht-sign"></i> ฿<?php echo number_format($product['price_thb'], 2); ?></span>
                             </div>
                             
                             <button type="button" class="btn btn-buy" onclick="openPurchaseModal(<?php echo htmlspecialchars(json_encode($product)); ?>)">
@@ -1095,6 +1192,63 @@ $messenger_url = "https://m.me/JamLagz2025";
         <?php endif; ?>
     </div>
 </div>
+
+<!-- ============================================ -->
+<!-- INSTALLMENT PLANS SECTION (NEW)              -->
+<!-- ============================================ -->
+<?php if (count($installment_plans) > 0): ?>
+<div class="container my-5" id="installments">
+    <div class="section-title">
+        <h2><i class="fas fa-calendar-alt"></i> FLEXIBLE INSTALLMENT PLANS</h2>
+        <p>Own your dream MLBB account with our easy payment plans!</p>
+    </div>
+    
+    <div class="row g-4">
+        <?php foreach ($installment_plans as $plan): ?>
+            <div class="col-md-6 col-lg-4">
+                <div class="installment-card position-relative">
+                    <span class="installment-badge">
+                        <i class="fas fa-calendar-check"></i> Installment Available
+                    </span>
+                    
+                    <?php if (!empty($plan['image'])): ?>
+                        <img src="uploads/installments/<?php echo htmlspecialchars($plan['image']); ?>" 
+                             class="card-img-top" 
+                             alt="<?php echo htmlspecialchars($plan['title']); ?>"
+                             style="height: 200px; object-fit: cover; cursor: pointer;"
+                             onclick="openImageModal('uploads/installments/<?php echo htmlspecialchars($plan['image']); ?>', '<?php echo htmlspecialchars($plan['title']); ?>')">
+                        <div class="image-hint">
+                            <i class="fas fa-search-plus"></i> Click to zoom
+                        </div>
+                    <?php else: ?>
+                        <div class="card-img-top d-flex align-items-center justify-content-center" 
+                             style="height: 200px; background: linear-gradient(135deg, #1a1f2e, #0f121c);">
+                            <i class="fas fa-calendar-alt installment-icon"></i>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <div class="card-body p-4">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-hand-holding-usd installment-icon"></i>
+                        </div>
+                        <h5 class="card-title text-center"><?php echo htmlspecialchars($plan['title']); ?></h5>
+                        <p class="card-text-desc text-center mt-3">
+                            <?php echo nl2br(htmlspecialchars($plan['description'])); ?>
+                        </p>
+                        
+                        <div class="text-center mt-4">
+                            <button class="btn btn-buy" style="background: linear-gradient(95deg, #2ecc71, #27ae60);" 
+                                    onclick="alert('Contact us on Facebook to avail this installment plan!\n\nFacebook: <?php echo $facebook_url; ?>')">
+                                <i class="fas fa-calendar-check me-2"></i> INQUIRE NOW
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+<?php endif; ?>
 
 <!-- Sold Accounts Section (Recent Sales) -->
 <?php if (count($sold_products) > 0): ?>
@@ -1143,7 +1297,7 @@ $messenger_url = "https://m.me/JamLagz2025";
         <i class="fas fa-exchange-alt fa-3x text-danger mb-3"></i>
         <h3 class="fw-bold">WANT TO SELL YOUR MLBB ACCOUNT?</h3>
         <p class="text-secondary">Get the best value for your Mobile Legends account with rare skins, high rank, and collector items.</p>
-        <button class="btn btn-buy" style="width: auto; padding: 12px 32px;" onclick="alert('Contact us: sell@jamlags.com or DM on Facebook!')">
+        <button class="btn btn-buy" style="width: auto; padding: 12px 32px;" onclick="alert('Contact us: jameslaag1228@gmail.com or DM on Facebook!')">
             <i class="fas fa-envelope"></i> SELL YOUR ACCOUNT NOW
         </button>
         <p class="small text-secondary mt-3">✨ Free evaluation | Fast payout | 100% secure</p>
@@ -1195,7 +1349,7 @@ $messenger_url = "https://m.me/JamLagz2025";
     <div class="row text-center g-3">
         <div class="col-6 col-md-3">
             <div class="p-3" style="background: rgba(224,58,58,0.1); border-radius: 20px;">
-                <h3 class="text-danger fw-bold">More than 200+ since 2023</h3>
+                <h3 class="text-danger fw-bold">200+</h3>
                 <small>Accounts Sold</small>
             </div>
         </div>
@@ -1214,7 +1368,7 @@ $messenger_url = "https://m.me/JamLagz2025";
         <div class="col-6 col-md-3">
             <div class="p-3" style="background: rgba(224,58,58,0.1); border-radius: 20px;">
                 <h3 class="text-danger fw-bold">⭐ 4.5★</h3>
-                <small>Trustpilot Rating</small>
+                <small>Trust Rating</small>
             </div>
         </div>
     </div>
@@ -1282,7 +1436,7 @@ $messenger_url = "https://m.me/JamLagz2025";
     </div>
 </div>
 
-<!-- Enhanced Purchase Modal - Updated with Phone and Email instead of Messenger, and clickable image -->
+<!-- ENHANCED PURCHASE MODAL - WITH SCROLLABLE BODY -->
 <div id="purchaseModal" class="purchase-modal">
     <div class="purchase-modal-content">
         <div class="purchase-modal-header">
@@ -1323,7 +1477,7 @@ $messenger_url = "https://m.me/JamLagz2025";
                     </ul>
                     
                     <div class="contact-buttons">
-                        <a href="<?php echo $facebook_url; ?>" target="_blank" class="btn btn-fb">
+                        <a href="<?php echo $facebook_url; ?>" target="_blank" class="btn-fb">
                             <i class="fab fa-facebook me-2"></i> Message on Facebook
                         </a>
                     </div>
@@ -1437,8 +1591,8 @@ $messenger_url = "https://m.me/JamLagz2025";
         document.getElementById('purchaseName').innerText = product.name;
         document.getElementById('purchaseDescription').innerText = product.description;
         document.getElementById('purchasePhp').innerHTML = '<i class="fas fa-coins"></i> ₱' + parseFloat(product.price_php).toFixed(2);
-        document.getElementById('purchaseUsd').innerHTML = '<i class="fas fa-dollar-sign"></i> ' + parseFloat(product.price_usd).toFixed(2);
-        document.getElementById('purchaseThb').innerHTML = '<i class="fas fa-baht-sign"></i> ' + parseFloat(product.price_thb).toFixed(2);
+        document.getElementById('purchaseUsd').innerHTML = '<i class="fas fa-dollar-sign"></i> $' + parseFloat(product.price_usd).toFixed(2);
+        document.getElementById('purchaseThb').innerHTML = '<i class="fas fa-baht-sign"></i> ฿' + parseFloat(product.price_thb).toFixed(2);
         
         document.getElementById('purchaseModal').style.display = 'block';
         document.body.style.overflow = 'hidden';
@@ -1447,7 +1601,6 @@ $messenger_url = "https://m.me/JamLagz2025";
     // Function to open image modal from purchase modal (clickable image)
     function openPurchaseImageModal() {
         if (currentPurchaseImageSrc) {
-            // Get product name for caption
             const productName = document.getElementById('purchaseName').innerText;
             openImageModal(currentPurchaseImageSrc, productName + ' (Account Image)');
         }
@@ -1490,7 +1643,7 @@ $messenger_url = "https://m.me/JamLagz2025";
     });
     
     // Animation on scroll
-    const cards = document.querySelectorAll('.product-card, .feature-card');
+    const cards = document.querySelectorAll('.product-card, .feature-card, .installment-card');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
