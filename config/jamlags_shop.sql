@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2026 at 04:35 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Generation Time: Apr 03, 2026 at 01:53 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,6 +40,21 @@ CREATE TABLE `admin_users` (
 
 INSERT INTO `admin_users` (`id`, `username`, `password`, `email`) VALUES
 (1, 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@jamlags.com');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `installment_plans`
+--
+
+CREATE TABLE `installment_plans` (
+  `id` int(11) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `status` enum('active','inactive') NOT NULL DEFAULT 'active',
+  `date_added` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -80,16 +95,6 @@ CREATE TABLE `products` (
   `account_year` int(11) DEFAULT 2024
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `products`
---
-
-INSERT INTO `products` (`id`, `name`, `description`, `image`, `price_php`, `price_usd`, `price_thb`, `featured`, `created_at`, `status`, `skins`, `heroes`, `diamonds`, `account_year`) VALUES
-(7, 'SALE WORLD COLLECTOR ACCOUNT', 'Clean BInd | Negotiable for sure buyers only', '1774745589_660353920_122109239919254850_1479963609439656482_n.jpg', 25000.00, 413.00, 13584.00, 1, '2026-03-29 00:53:09', 'sold', 0, 0, 0, 2024),
-(8, 'WORLD COLLECTOR ACCOUNT', 'CLEAN BINDINGS\r\nREBINDABLE\r\nOPEN FOR INSTALLMENT PLAN', '1774749094_660353920_122109239919254850_1479963609439656482_n.jpg', 70000.00, 412.00, 38037.00, 1, '2026-03-29 01:51:34', 'available', 0, 0, 0, 2024),
-(9, 'MEGA COLLECTOR', 'SOLID WINRATE GOOD FOR MAIN', '1774750150_660353920_122109239919254850_1479963609439656482_n.jpg', 1232321.00, 2131.00, 2312321.00, 1, '2026-03-29 02:09:10', 'sold', 438, 121, 222, 2024),
-(10, 'EXALTED COLLECTOR', 'CLEAN BINDINGS ARAT NA', '1774750553_660353920_122109239919254850_1479963609439656482_n.jpg', 4214.00, 24412.00, 2142345.00, 1, '2026-03-29 02:15:53', 'available', 356, 121, 2022, 2024);
-
 -- --------------------------------------------------------
 
 --
@@ -106,13 +111,6 @@ CREATE TABLE `testimonials` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `testimonials`
---
-
-INSERT INTO `testimonials` (`id`, `image`, `description`, `customer_name`, `date_added`, `status`) VALUES
-(1, '1774751582_660353920_122109239919254850_1479963609439656482_n.jpg', 'Salamat sa pag avail SIr', '', '2026-03-29 02:33:02', 'active');
-
---
 -- Indexes for dumped tables
 --
 
@@ -122,6 +120,13 @@ INSERT INTO `testimonials` (`id`, `image`, `description`, `customer_name`, `date
 ALTER TABLE `admin_users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `installment_plans`
+--
+ALTER TABLE `installment_plans`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_status` (`status`);
 
 --
 -- Indexes for table `orders`
@@ -153,6 +158,12 @@ ALTER TABLE `admin_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `installment_plans`
+--
+ALTER TABLE `installment_plans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
@@ -162,7 +173,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `testimonials`
